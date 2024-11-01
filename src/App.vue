@@ -1,13 +1,29 @@
 <script setup>
+import { nanoid } from "nanoid";
 import ToDoItem from "./components/ToDoItem.vue";
+
+const data = {
+  ToDoItems: [
+    { label: "Learn Vue", done: false, id: "todo-" + nanoid() },
+    {
+      label: "Create a Vue project with the CLI",
+      done: true,
+      id: "todo-" + nanoid(),
+    },
+    { label: "Create a to-do list", done: false, id: "todo-" + nanoid() },
+  ],
+};
 </script>
 
 <template>
   <div id="app">
     <h1>To-Do List</h1>
     <ul>
-      <li>
-        <to-do-item label="My to-do item" :done="false"></to-do-item>
+      <li v-for="item in data.ToDoItems" :key="item.id">
+        <to-do-item
+          :label="item.label"
+          :done="item.done"
+          :id="item.id"></to-do-item>
       </li>
     </ul>
   </div>
