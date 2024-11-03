@@ -1,24 +1,25 @@
 <template>
   <div id="app">
     <h1>To-Do List</h1>
+    <h2 id="list-summary">{{ listSummary }}</h2>
     <to-do-form @todo-added="addToDo"></to-do-form>
     <ul aria-labelledby="list-summary" class="stack-large">
       <li v-for="item in ToDoItems" :key="item.id">
         <to-do-item
           :label="item.label"
           :done="item.done"
-          :id="item.id"></to-do-item>
+          :id="item.id"
+          @checkbox-change="updateDoneStatus(item.id)"></to-do-item>
       </li>
     </ul>
   </div>
 </template>
-
 <script>
 import { nanoid } from "nanoid";
 import ToDoItem from "./components/ToDoItem.vue";
 import ToDoForm from "./components/ToDoForm.vue";
 
-// keep log for rememberin
+// keep log for remembering
 console.log("call app");
 
 export default {
@@ -53,11 +54,25 @@ export default {
         label: toDoLabel,
         done: false,
       });
+      console.log(this.ToDoItems);
+    },
+    updateDoneStatus(toDoId) {
+      console.log("call updateDoneStatus");
+      const toDoToUpdate = this.ToDoItems.find((item) => item.id == toDoId);
+      toDoToUpdate.done = !toDoToUpdate.done;
+      console.log(this.ToDoItems);
+    },
+  },
+  computed: {
+    listSummary() {
+      const numberFinishedItem = this.ToDoItems.filter(
+        (item) => item.done,
+      ).length;
+      return `${numberFinishedItem} out of ${this.ToDoItems.length} items completed`;
     },
   },
 };
 </script>
-
 <style>
 /* Global styles */
 .btn {
