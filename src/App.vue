@@ -9,7 +9,9 @@
           :label="item.label"
           :done="item.done"
           :id="item.id"
-          @checkbox-change="updateDoneStatus(item.id)"></to-do-item>
+          @checkbox-changed="updateDoneStatus(item.id)"
+          @item-edited="editTodo(item.id, $event)"
+          @item-deleted="deleteTodo(item.id)"></to-do-item>
       </li>
     </ul>
   </div>
@@ -62,9 +64,21 @@ export default {
       toDoToUpdate.done = !toDoToUpdate.done;
       console.log(this.ToDoItems);
     },
+    deleteTodo(toDoId) {
+      console.log(`call deleteTodo ${toDoId}`);
+      const index = this.ToDoItems.findIndex((item) => item.id === toDoId);
+      console.log(`call index ${index}`);
+      this.ToDoItems.splice(index, 1);
+    },
+    editTodo(toDoId, newLabel) {
+      console.log(`call editTodo ${newLabel}`);
+      const toDoToEdit = this.ToDoItems.find((item) => item.id == toDoId);
+      toDoToEdit.label = newLabel;
+    },
   },
   computed: {
     listSummary() {
+      console.log("call listSummary");
       const numberFinishedItem = this.ToDoItems.filter(
         (item) => item.done,
       ).length;
