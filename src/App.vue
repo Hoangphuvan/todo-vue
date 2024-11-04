@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>To-Do List</h1>
-    <h2 id="list-summary">{{ listSummary }}</h2>
+    <h2 id="list-summary" ref="listSummary" tabindex="-1">{{ listSummary }}</h2>
     <to-do-form @todo-added="addToDo"></to-do-form>
     <ul aria-labelledby="list-summary" class="stack-large">
       <li v-for="item in ToDoItems" :key="item.id">
@@ -69,6 +69,7 @@ export default {
       const index = this.ToDoItems.findIndex((item) => item.id === toDoId);
       console.log(`call index ${index}`);
       this.ToDoItems.splice(index, 1);
+      this.$refs.listSummary.focus();
     },
     editTodo(toDoId, newLabel) {
       console.log(`call editTodo ${newLabel}`);
